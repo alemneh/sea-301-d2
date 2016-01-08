@@ -17,6 +17,9 @@ Article.prototype.toHtml = function() {
        Convert markdown to HTML
        Render "HTML snippet" and return it
     */
+    var template = Handlebars.compile($('#article-template').text());
+
+    this.marked(body);
 };
 
 
