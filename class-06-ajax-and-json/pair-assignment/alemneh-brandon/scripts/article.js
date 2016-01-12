@@ -59,7 +59,7 @@ Article.fetchAll = function() {
             Article.getAll();
         }
       }
-
+    });
 
 
     // When rawData is already in localStorage,
@@ -71,7 +71,7 @@ Article.fetchAll = function() {
   } else {
       Article.loadAll(JSON.parse(localStorage.rawData));
       articleView.initIndexPage();
-    });
+    }
 
 Article.getAll() {
     $.getJSON('/data/hackerIpsum.json', function(rawData) {
