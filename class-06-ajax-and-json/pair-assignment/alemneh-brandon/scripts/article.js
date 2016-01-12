@@ -44,8 +44,23 @@ Article.loadAll = function(rawData) {
 // This function will retrieve the data from either a local or remote source,
 // and process it, then hand off control to the View.
 Article.fetchAll = function() {
+
   if (localStorage.rawData) {
-    Article.loadAll(JSON.parse(localStorage.rawData));
+
+    var jqXHR = $.ajax({
+      type: 'HEAD',
+      url: '/data/hackerIpsum.json',
+      ifModified: 'true',
+      success: function(data, message, xhr) {
+        console.log(xhr);
+        var eTag = xhr.getResponseHeader('eTag');
+        if (!localStorage.eTag || eTag !== localStorage.eTag) {
+            localStorage.eTag = eTag;
+            Article.getAll();
+        }
+      }
+
+
 
     // When rawData is already in localStorage,
     // we can load it with the .loadAll function above,
@@ -54,12 +69,19 @@ Article.fetchAll = function() {
 
     articleView.initIndexPage();//DONE: What method do we call to render the index page?
   } else {
+      Article.loadAll(JSON.parse(localStorage.rawData));
+      articleView.initIndexPage();
+    });
 
+Article.getAll() {
     $.getJSON('/data/hackerIpsum.json', function(rawData) {
       Article.loadAll(rawData);
       localStorage.rawData = JSON.stringify(rawData);
       articleView.inintIndexPage();
+      Article.getAll();
     });
+  }
+
     // DONE: When we don't already have the rawData,
     // we need to retrieve the JSON file from the server with AJAX (which jQuery method is best for this?),
     // cache it in localStorage so we can skip the server call next time,
