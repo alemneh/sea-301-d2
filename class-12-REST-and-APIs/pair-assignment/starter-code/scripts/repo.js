@@ -5,7 +5,7 @@
 
   repos.requestRepos = function(callback) {
 
-    var githubToken = '64953712f08ba5ca1e994980096187bed64dc4c6';
+
     // DONE: How would you like to fetch your repos? Don't forget to call the callback.
     $.ajax({
         url: 'https://api.github.com/users/alemneh/repos' + '? per_page=5&sort=updated',
@@ -15,10 +15,7 @@
               console.log(data);
               repos.all = data;
         }
-      });
-
-
-
+      }).done(callback);
   };
 
   // DONE: Model method that filters the full collection for repos with a particular attribute.
